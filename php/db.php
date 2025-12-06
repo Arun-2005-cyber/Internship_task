@@ -5,9 +5,9 @@ $pass = getenv("MYSQLPASSWORD");
 $db   = getenv("MYSQLDATABASE");
 $port = getenv("MYSQLPORT");
 
-$conn = new mysqli($host, $user, $pass, $db, $port);
+$mysqli = new mysqli($host, $user, $pass, $db, $port);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
 ?>
