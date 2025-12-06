@@ -1,0 +1,11 @@
+/* Glassmorphism style - Option A */
+body.bg-gradient {
+  background: linear-gradient(135deg, #eef2ff 0%, #e6fff7 100%);
+  min-height: 100vh;
+}
+.card.glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(31,38,135,0.1);
+}
