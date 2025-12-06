@@ -36,7 +36,7 @@ $stmt->close();
 $hash = password_hash($password, PASSWORD_BCRYPT);
 
 // insert user
-$stmt = $mysqli->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
+$stmt = $mysqli->prepare('INSERT INTO user (name, email, password) VALUES (?, ?, ?)');
 $stmt->bind_param('sss', $name, $email, $hash);
 $ok = $stmt->execute();
 
