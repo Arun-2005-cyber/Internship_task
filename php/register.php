@@ -21,7 +21,7 @@ if(strlen($password) < 6){
 }
 
 // check existing email
-$stmt = $mysqli->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
+$stmt = $mysqli->prepare('SELECT id FROM user WHERE email = ? LIMIT 1');
 $stmt->bind_param('s', $email);
 $stmt->execute();
 $stmt->store_result();
