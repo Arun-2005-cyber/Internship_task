@@ -1,4 +1,4 @@
-// Profile JS - fetch / update profile
+// Profile JS - fetch / update profile with loader and auto-hide alert
 $(document).ready(function(){
   const userId = localStorage.getItem('user_id');
   if(!userId){
@@ -8,9 +8,15 @@ $(document).ready(function(){
 
   function showAlert(msg, type='info'){
     $('#alert').html('<div class="alert alert-'+type+'">'+msg+'</div>');
+    setTimeout(()=> $('#alert').html(''), 3000); // auto-hide after 3s
+  }
+
+  function showLoader(){
+    return '<div class="text-center my-2"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
   }
 
   function fetchProfile(){
+    $('#alert').html(showLoader());
     $.ajax({
       url: 'php/verify.php',
       method: 'POST',
@@ -24,6 +30,7 @@ $(document).ready(function(){
           $('#dob').val(res.data.profile.dob || '');
           $('#contact').val(res.data.profile.contact || '');
           $('#address').val(res.data.profile.address || '');
+          $('#alert').html(''); // clear loader
         } else {
           showAlert('Session invalid. Redirecting to login...', 'danger');
           setTimeout(()=> window.location.href='login.html', 1200);
@@ -43,6 +50,7 @@ $(document).ready(function(){
       contact: $('#contact').val().trim(),
       address: $('#address').val().trim()
     };
+    $('#alert').html(showLoader());
     $.ajax({
       url: 'php/updateProfile.php',
       method: 'POST',
@@ -62,7 +70,7 @@ $(document).ready(function(){
   $('#refreshBtn').click(function(){ fetchProfile(); });
 
   $('#logoutBtn').click(function(){
-    // clear redis session via API then localStorage
+    $('#alert').html(showLoader());
     $.ajax({
       url: 'php/logout.php',
       method: 'POST',
@@ -73,7 +81,10 @@ $(document).ready(function(){
         localStorage.removeItem('user_id');
         window.location.href = 'login.html';
       },
-      error: function(){ localStorage.clear(); window.location.href='login.html'; }
+      error: function(){ 
+        localStorage.clear(); 
+        window.location.href='login.html'; 
+      }
     });
   });
 
