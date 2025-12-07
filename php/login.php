@@ -11,7 +11,7 @@ if(!$email || !$password){
 }
 
 // fetch user
-$stmt = $mysqli->prepare('SELECT id, password, name FROM users WHERE email = ? LIMIT 1');
+$stmt = $mysqli->prepare('SELECT id, password, name FROM users1 WHERE email = ? LIMIT 1');
 $stmt->bind_param('s', $email);
 $stmt->execute();
 $stmt->bind_result($id, $hash, $name);
