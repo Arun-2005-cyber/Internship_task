@@ -23,18 +23,18 @@ if(!$stmt->fetch()){
 $stmt->close();
 
 // fetch MongoDB profile (optional)
-$profile = new stdClass();
-if($mongoClient){
-    try {
-        $collection = $mongoClient->selectCollection('internship_task', 'profiles');
-        $doc = $collection->findOne(['email' => $user_email]);  // use email as identifier
-        if($doc){
-            $profile = $doc;
-        }
-    } catch (Exception $e) {
-        // ignore errors
-    }
-}
+// $profile = new stdClass();
+// if($mongoClient){
+//     try {
+//         $collection = $mongoClient->selectCollection('internship_task', 'profiles');
+//         $doc = $collection->findOne(['email' => $user_email]);  // use email as identifier
+//         if($doc){
+//             $profile = $doc;
+//         }
+//     } catch (Exception $e) {
+//         // ignore errors
+//     }
+// }
 
 echo json_encode([
     'success' => true,
