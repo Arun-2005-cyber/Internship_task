@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once 'db.php';  // only for MongoDB now
+require_once 'db.php';  // MySQL connection
 
 $name = $_POST['name'] ?? '';
 $age = $_POST['age'] ?? null;
@@ -13,33 +13,26 @@ if (!$name) {
     exit;
 }
 
-if (!$mongoClient) {
-    echo json_encode(['success' => false, 'message' => 'MongoDB not connected']);
-    exit;
-}
-
 try {
-    $collection = $mongoClient->selectCollection('internship_task', 'profiles');
+    $stmt = $mysqli->prepare("
+        UPDATE users1 
+        SET age = ?, dob = ?, contact = ?, address = ?
+        WHERE name = ?
+    ");
 
-    $filter = ['name' => $name];
-    $update = [
-        '$set' => [
-            'name' => $name,
-            'age' => $age,
-            'dob' => $dob,
-            'contact' => $contact,
-            'address' => $address
-        ]
-    ];
-    $options = ['upsert' => true];
+    $stmt->bind_param("issss", $age, $dob, $contact, $address, $name);
 
-    $collection->updateOne($filter, $update, $options);
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Update failed: '.$stmt->error]);
+    }
 
-    echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
+    $stmt->close();
     exit;
 
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'MongoDB update failed: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     exit;
 }
 ?>
