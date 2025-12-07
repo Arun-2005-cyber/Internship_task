@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once 'db.php';
+require_once 'db.php';  // only for MongoDB
 
 $name = $_POST['name'] ?? '';
 $age = $_POST['age'] ?? null;
@@ -13,48 +13,33 @@ if (!$name) {
     exit;
 }
 
-// update name in MySQL using prepared statement
-try {
-    // check if user exists
-    $stmtCheck = $mysqli->prepare('SELECT id FROM users WHERE name = ?');
-    $stmtCheck->bind_param('s', $name);
-    $stmtCheck->execute();
-    $stmtCheck->store_result();
-
-    if ($stmtCheck->num_rows > 0) {
-        // user exists, you can update if needed (here just keeping name same)
-        $stmtCheck->close();
-    } else {
-        // user not exists, insert new
-        $stmtInsert = $mysqli->prepare('INSERT INTO users (name) VALUES (?)');
-        $stmtInsert->bind_param('s', $name);
-        $stmtInsert->execute();
-        $stmtInsert->close();
-    }
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'MySQL operation failed: ' . $e->getMessage()]);
-    exit;
-}
-
-// update or upsert profile in MongoDB
 if ($mongoClient) {
     try {
         $collection = $mongoClient->selectCollection('internship_task', 'profiles');
-        $filter = ['name' => $name]; // using name as unique key
-        $update = ['$set' => [
-            'age' => $age,
-            'dob' => $dob,
-            'contact' => $contact,
-            'address' => $address
-        ]];
+
+        $filter = ['name' => $name];
+        $update = [
+            '$set' => [
+                'name' => $name,
+                'age' => $age,
+                'dob' => $dob,
+                'contact' => $contact,
+                'address' => $address
+            ]
+        ];
         $options = ['upsert' => true];
+
         $collection->updateOne($filter, $update, $options);
+
+        echo json_encode(['success' => true, 'message' => 'Profile updated successfully (MongoDB only).']);
+        exit;
+
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Mongo update failed: ' . $e->getMessage()]);
         exit;
     }
 }
 
-echo json_encode(['success' => true, 'message' => 'Profile updated successfully.']);
+echo json_encode(['success' => false, 'message' => 'MongoDB not connected']);
 exit;
 ?>
