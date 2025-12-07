@@ -51,7 +51,7 @@ $(document).ready(function () {
   });
 
   // Password visibility toggle - Login Page
-  $('#togglePasswordLogin').click(function () {
+  $('#togglePassword').click(function () {
     const pwd = $('#password');
     const newType = pwd.attr('type') === 'password' ? 'text' : 'password';
     pwd.attr('type', newType);
