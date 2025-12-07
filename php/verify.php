@@ -12,7 +12,7 @@ if(!isset($_SESSION['user_email'])){
 $user_email = $_SESSION['user_email'];
 
 // fetch MySQL user
-$stmt = $mysqli->prepare('SELECT name, email, created_at FROM users1 WHERE email = ? LIMIT 1');
+$stmt = $mysqli->prepare('SELECT name, email FROM users1 WHERE email = ? LIMIT 1');
 $stmt->bind_param('s', $user_email);
 $stmt->execute();
 $stmt->bind_result($name, $email);
