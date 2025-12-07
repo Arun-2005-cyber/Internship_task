@@ -1,19 +1,102 @@
-/* Glassmorphism style - Option A */
+/* ===== Global UI Theme ===== */
 body.bg-gradient {
-  background: linear-gradient(135deg, #eef2ff 0%, #e6fff7 100%);
+  background: linear-gradient(135deg, #dfe9f3 0%, #ffffff 100%);
   min-height: 100vh;
-}
-.cardglass {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(31,38,135,0.1);
-}
-#togglePassword {
-    top: 50px;       /* perfect vertical alignment */
-    right: 12px;     /* perfect right spacing */
-    position: absolute;
-    font-size: 1.2rem;
-    color: #666;
+  font-family: "Poppins", sans-serif;
 }
 
+/* ===== Glass Card ===== */
+.cardglass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 18px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cardglass:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Headings ===== */
+.cardglass h3,
+.cardglass h4,
+.cardglass h5 {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #333;
+}
+
+/* ===== Input Styles ===== */
+.form-control {
+  height: 48px;
+  border-radius: 10px !important;
+  border: 1px solid #d1d9e6;
+  background: rgba(255, 255, 255, 0.65);
+  transition: 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #4b91ff;
+  box-shadow: 0 0 10px rgba(75, 145, 255, 0.4);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* ===== Buttons ===== */
+.btn-primary,
+.btn-success {
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4b91ff, #367cff);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #367cff, #1e5eff);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #3ddc84, #24c56d);
+  border: none;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #24c56d, #1aa456);
+}
+
+/* ===== Password Toggle Eye ===== */
+#togglePassword {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #555;
+  cursor: pointer;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ===== Links ===== */
+a {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
