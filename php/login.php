@@ -27,16 +27,7 @@ if(!password_verify($password, $hash)){
     exit;
 }
 
-// create a simple session token in Redis (optional)
-$sessionKey = null;
-if($redis){
-    $sessionKey = 'session_user_'.$email;  // use email as identifier
-    $redis->set($sessionKey, time());
-    // set expiry 24 hours
-    $redis->expire($sessionKey, 24*3600);
-}
-
-// return success and user email
+// login successful
 echo json_encode(['success'=>true,'message'=>'Login successful.','user_email'=>$email]);
 exit;
 ?>
