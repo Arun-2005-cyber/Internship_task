@@ -12,7 +12,7 @@ body.bg-gradient {
 
 .container-page {
   width: 100%;
-  max-width: 520px;  
+  max-width:1045px;  
 }
 
 
@@ -34,7 +34,7 @@ body.bg-gradient {
 .cardglass h4,
 .cardglass h5,
 .cardglass label {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
 
@@ -79,7 +79,7 @@ a {
 /* Eye Icon */
 #togglePassword {
   right: 15px;
-  top: 50%;
+  top: 70%;
   transform: translateY(-50%);
   color: #333;        
 }
