@@ -1,52 +1,48 @@
 <?php
+session_start();  // start PHP session
 header('Content-Type: application/json');
 require_once 'db.php';
 
-$user_id = intval($_POST['user_id'] ?? 0);
-if(!$user_id){
-    echo json_encode(['success'=>false,'message'=>'Invalid session.']);
+// check if user is logged in
+if(!isset($_SESSION['user_email'])){
+    echo json_encode(['success'=>false,'message'=>'Session invalid.']);
     exit;
 }
 
-// check Redis session if available
-if($redis){
-    $sessionKey = 'session_user_'.$user_id;
-    if(!$redis->exists($sessionKey)){
-        echo json_encode(['success'=>false,'message'=>'Session expired.']);
-        exit;
-    }
-}
+$user_email = $_SESSION['user_email'];
 
 // fetch MySQL user
-$stmt = $mysqli->prepare('SELECT id, name, email, created_at FROM users WHERE id = ? LIMIT 1');
-$stmt->bind_param('i', $user_id);
+$stmt = $mysqli->prepare('SELECT name, email, created_at FROM users1 WHERE email = ? LIMIT 1');
+$stmt->bind_param('s', $user_email);
 $stmt->execute();
-$stmt->bind_result($id, $name, $email, $created_at);
+$stmt->bind_result($name, $email);
 if(!$stmt->fetch()){
     echo json_encode(['success'=>false,'message'=>'User not found.']);
     exit;
 }
 $stmt->close();
 
-// fetch MongoDB profile
+// fetch MongoDB profile (optional)
 $profile = new stdClass();
 if($mongoClient){
     try {
         $collection = $mongoClient->selectCollection('internship_task', 'profiles');
-        $doc = $collection->findOne(['mysql_id' => $user_id]);
+        $doc = $collection->findOne(['email' => $user_email]);  // use email as identifier
         if($doc){
             $profile = $doc;
         }
     } catch (Exception $e) {
-        // ignore
+        // ignore errors
     }
 }
 
-echo json_encode(['success'=>true,'data'=>[
-    'name'=>$name,
-    'email'=>$email,
-    'created_at'=>$created_at,
-    'profile'=>$profile
-]]);
+echo json_encode([
+    'success' => true,
+    'data' => [
+        'name' => $name,
+        'email' => $email,
+        'profile' => $profile
+    ]
+]);
 exit;
 ?>

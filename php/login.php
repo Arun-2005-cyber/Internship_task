@@ -1,4 +1,5 @@
 <?php
+session_start();  // start session
 header('Content-Type: application/json');
 require_once 'db.php';
 
@@ -27,7 +28,11 @@ if(!password_verify($password, $hash)){
     exit;
 }
 
-// login successful
+// set session variables
+$_SESSION['user_email'] = $email;
+$_SESSION['user_name'] = $name;
+
+// return success
 echo json_encode(['success'=>true,'message'=>'Login successful.','user_email'=>$email]);
 exit;
 ?>
