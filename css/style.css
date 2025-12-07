@@ -3,7 +3,7 @@ body.bg-gradient {
   background: linear-gradient(135deg, #eef2ff 0%, #e6fff7 100%);
   min-height: 100vh;
 }
-.card.glass {
+.cardglass {
   background: rgba(255,255,255,0.7);
   backdrop-filter: blur(8px);
   border-radius: 12px;
@@ -16,6 +16,4 @@ body.bg-gradient {
     font-size: 1.2rem;
     color: #666;
 }
-body{
-  background-color: red;
-}
+
