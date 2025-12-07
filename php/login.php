@@ -11,10 +11,10 @@ if(!$email || !$password){
 }
 
 // fetch user
-$stmt = $mysqli->prepare('SELECT id, password, name FROM users1 WHERE email = ? LIMIT 1');
+$stmt = $mysqli->prepare('SELECT password, name FROM users1 WHERE email = ? LIMIT 1');
 $stmt->bind_param('s', $email);
 $stmt->execute();
-$stmt->bind_result($id, $hash, $name);
+$stmt->bind_result($hash, $name);
 if(!$stmt->fetch()){
     echo json_encode(['success'=>false,'message'=>'Invalid email or password.']);
     exit;
@@ -30,13 +30,13 @@ if(!password_verify($password, $hash)){
 // create a simple session token in Redis (optional)
 $sessionKey = null;
 if($redis){
-    $sessionKey = 'session_user_'.$id;
+    $sessionKey = 'session_user_'.$email;  // use email as identifier
     $redis->set($sessionKey, time());
     // set expiry 24 hours
     $redis->expire($sessionKey, 24*3600);
 }
 
-// return success and user id
-echo json_encode(['success'=>true,'message'=>'Login successful.','user_id'=>$id]);
+// return success and user email
+echo json_encode(['success'=>true,'message'=>'Login successful.','user_email'=>$email]);
 exit;
 ?>
