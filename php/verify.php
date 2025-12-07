@@ -1,5 +1,5 @@
 <?php
-session_start();  // start PHP session
+session_start();
 header('Content-Type: application/json');
 require_once 'db.php';
 
@@ -22,19 +22,10 @@ if(!$stmt->fetch()){
 }
 $stmt->close();
 
-// fetch MongoDB profile (optional)
-// $profile = new stdClass();
-// if($mongoClient){
-//     try {
-//         $collection = $mongoClient->selectCollection('internship_task', 'profiles');
-//         $doc = $collection->findOne(['email' => $user_email]);  // use email as identifier
-//         if($doc){
-//             $profile = $doc;
-//         }
-//     } catch (Exception $e) {
-//         // ignore errors
-//     }
-// }
+// initialize profile to empty object
+$profile = new stdClass();
+
+// if you add MongoDB later, you can fill $profile here
 
 echo json_encode([
     'success' => true,
