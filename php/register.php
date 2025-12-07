@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__ . '/db.php';  // safer include
+require_once __DIR__ . '/db.php';
 
 // get POST data
 $name = $_POST['name'] ?? '';
@@ -15,13 +15,14 @@ if(!$name || !$email || !$password){
     echo json_encode(['success'=>false,'message'=>'Missing fields.']);
     exit;
 }
+
 if(strlen($password) < 6){
     echo json_encode(['success'=>false,'message'=>'Password too short.']);
     exit;
 }
 
 // check existing email
-$stmt = $mysqli->prepare('SELECT id FROM userss WHERE email = ? LIMIT 1');
+$stmt = $mysqli->prepare('SELECT email FROM users1 WHERE email = ? LIMIT 1');
 $stmt->bind_param('s', $email);
 $stmt->execute();
 $stmt->store_result();
@@ -36,8 +37,9 @@ $stmt->close();
 $hash = password_hash($password, PASSWORD_BCRYPT);
 
 // insert user
-$stmt = $mysqli->prepare('INSERT INTO userss (name, email, password) VALUES (?, ?, ?)');
-$stmt->bind_param('sss', $name, $email, $hash);
+$stmt = $mysqli->prepare('INSERT INTO users1 (name, email, password, age, dob, contact, address) VALUES (?, ?, ?, ?, ?, ?, ?)');
+$stmt->bind_param('sssisss', $name, $email, $hash, $age, $dob, $contact, $address);
+
 $ok = $stmt->execute();
 
 if(!$ok){
@@ -45,10 +47,6 @@ if(!$ok){
     exit;
 }
 
-$user_id = $stmt->insert_id;
-$stmt->close();
-
-// success
-echo json_encode(['success'=>true,'message'=>'Registered successfully.','user_id'=>$user_id]);
+echo json_encode(['success'=>true,'message'=>'Registered successfully.']);
 exit;
 ?>
