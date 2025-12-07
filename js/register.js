@@ -1,6 +1,6 @@
 // jQuery AJAX registration with loader and auto-hide alert
-$(document).ready(function(){
-  $('#registerBtn').click(function(e){
+$(document).ready(function () {
+  $('#registerBtn').click(function (e) {
     e.preventDefault();
 
     const data = {
@@ -17,9 +17,9 @@ $(document).ready(function(){
     $('#alert').html('');
 
     // Validation
-    if(!data.name || !data.email || !data.password || data.password.length < 6){
+    if (!data.name || !data.email || !data.password || data.password.length < 6) {
       $('#alert').html('<div class="alert alert-danger">Fill required fields. Password min 6 chars.</div>');
-      setTimeout(()=> $('#alert').html(''), 3000); // hide after 3s
+      setTimeout(() => $('#alert').html(''), 3000); // hide after 3s
       return;
     }
 
@@ -32,22 +32,31 @@ $(document).ready(function(){
       method: 'POST',
       data: data,
       dataType: 'json',
-      success: function(res){
-        if(res.success){
-          $('#alert').html('<div class="alert alert-success">'+res.message+'</div>');
-          setTimeout(()=>{
+      success: function (res) {
+        if (res.success) {
+          $('#alert').html('<div class="alert alert-success">' + res.message + '</div>');
+          setTimeout(() => {
             $('#alert').html('');
             window.location.href = 'login.html';
           }, 3000); // wait 3s before redirect
         } else {
-          $('#alert').html('<div class="alert alert-danger">'+res.message+'</div>');
-          setTimeout(()=> $('#alert').html(''), 3000); // hide after 3s
+          $('#alert').html('<div class="alert alert-danger">' + res.message + '</div>');
+          setTimeout(() => $('#alert').html(''), 3000); // hide after 3s
         }
       },
-      error: function(xhr){
+      error: function (xhr) {
         $('#alert').html('<div class="alert alert-danger">Server error.</div>');
-        setTimeout(()=> $('#alert').html(''), 3000); // hide after 3s
+        setTimeout(() => $('#alert').html(''), 3000); // hide after 3s
       }
     });
   });
+
+  // Password visibility toggle
+  $('#togglePassword').click(function () {
+    const passwordField = $('#password');
+    const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+    passwordField.attr('type', type);
+    $(this).toggleClass('bi-eye bi-eye-slash'); // switch icon
+  });
+
 });
